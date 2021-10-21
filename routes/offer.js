@@ -34,4 +34,43 @@ router.post("/offer/publish", isAuthenticated, async (req, res) => {
   }
 });
 
+/*
+const offerByFiltering = (req, res, next) => {
+    if ()
+    return 
+}
+*/
+router.get("/offers", async (req, res) => {
+  console.log(req.query);
+  let skipOpts = 0;
+  let limitOpts = 10;
+  const sortOpts = {};
+  const findOpts = {};
+
+  if (!req.query.page) {
+    skipOpts = 0;
+    limitOpts = 50;
+  } else {
+    skipOpts = Number(req.query.page);
+    limitOpts = limitOpts * 2;
+  }
+
+  if (!req.query.sort || req.query.sort === "price-asc") {
+    sortOpts["price"] = 1;
+  } else if (req.query.sort === "price-desc") {
+    sortOpts["price"] = 1;
+  } else {
+    sortOpts["price"] === 1;
+  }
+
+  const result = await Offer.find({
+    product_name: new RegExp(req.query.title, "i"),
+  })
+    .sort(sortOpts)
+    .limit(limitOpts)
+    .skip(skipOpts);
+  console.log("Ok", skipOpts, limitOpts, sortOpts);
+});
+//Offer.save()
+
 module.exports = router;
