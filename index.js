@@ -14,7 +14,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-mongoose.connect(process.env.MONGODB_VINTED_URI, {
+mongoose.connect(process.env.MONGO_ATLAS_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
