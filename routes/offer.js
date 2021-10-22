@@ -51,8 +51,8 @@ router.get("/offers", async (req, res) => {
     skipOpts = 0;
     limitOpts = 50;
   } else {
-    skipOpts = Number(req.query.page);
-    limitOpts = limitOpts * 2;
+    limitOpts = 15;
+    skipOpts = Number(req.query.page) * limitOpts;
   }
 
   if (!req.query.sort || req.query.sort === "price-asc") {
@@ -63,14 +63,18 @@ router.get("/offers", async (req, res) => {
     sortOpts["price"] === 1;
   }
 
+  if (!req.query.priceMin || !req.query.priceMax) {
+    sortOpts["product_name"] = new RegExp(req.query.title, "i");
+  }
+
   const result = await Offer.find({
     product_name: new RegExp(req.query.title, "i"),
+    price: { $gte: req.query.prineMin },
   })
     .sort(sortOpts)
     .limit(limitOpts)
     .skip(skipOpts);
-  console.log("Ok", skipOpts, limitOpts, sortOpts);
+  console.log(result);
 });
-//Offer.save()
 
 module.exports = router;
