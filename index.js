@@ -2,18 +2,19 @@ const express = require("express");
 const formidableMiddleware = require("express-formidable");
 const mongoose = require("mongoose");
 const cloudinary = require("cloudinary").v2;
+require("dotenv").config();
 
 const app = express();
 
 app.use(formidableMiddleware());
 
 cloudinary.config({
-  cloud_name: "dnb9zss29",
-  api_key: "136614577146229",
-  api_secret: "9AxHyqwroukAs8B5H8X8hze6CaI",
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-mongoose.connect("mongodb://localhost/vinted", {
+mongoose.connect(process.env.MONGODB_VINTED_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -28,6 +29,6 @@ app.all("*", (req, res) => {
   res.json("All Routes");
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log("serv up and running");
 });
